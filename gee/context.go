@@ -8,12 +8,12 @@ import (
 
 type H map[string]interface{}
 
-//请求的上下文，就是请求的一些相关的信息
 type Context struct {
 	Writer     http.ResponseWriter
 	Req        *http.Request
 	Path       string
 	Method     string
+	Params     map[string]string
 	StatusCode int
 }
 
@@ -24,6 +24,11 @@ func newContext(w http.ResponseWriter, req *http.Request) *Context {
 		Path:   req.URL.Path,
 		Method: req.Method,
 	}
+}
+
+func (c *Context) Param(key string) string {
+	value, _ := c.Params[key]
+	return value
 }
 
 func (c *Context) PostForm(key string) string {
